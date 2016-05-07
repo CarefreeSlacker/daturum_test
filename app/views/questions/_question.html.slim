@@ -1,0 +1,18 @@
+blockquote
+  = question.decorate.label(current_user.id)
+  br
+  p = question.header
+  footer = question.text
+  = question.decorate.answer_status_for(current_user.id)
+  - unless question.user_id == current_user.id
+    a.btn.btn-primary role='button' data-toggle='collapse' href="#collapseQuestion" aria-expanded=false aria-controls='collapseQuestion'
+      | Make answer
+    #collapseQuestion.collapse
+      .well
+        = simple_form_for(:answer, url: answers_path, method: :post) do |f|
+          = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
+          = f.input :question_id, as: :hidden, input_html: { value: question.id }
+          = f.input :text, as: :text, required: false
+          = f.submit 'Answer the question', class: 'btn btn-success'
+  - if question.answers.any?
+    = render partial: 'answer', collection: question.answers

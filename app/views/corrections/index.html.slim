@@ -1,0 +1,25 @@
+h1 Listing corrections
+
+table
+  thead
+    tr
+      th User
+      th Answer
+      th Text
+      th
+      th
+      th
+
+  tbody
+    - @corrections.each do |correction|
+      tr
+        td = correction.user_id
+        td = correction.answer_id
+        td = correction.text
+        td = link_to 'Show', correction
+        td = link_to 'Edit', edit_correction_path(correction)
+        td = link_to 'Destroy', correction, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Correction', new_correction_path

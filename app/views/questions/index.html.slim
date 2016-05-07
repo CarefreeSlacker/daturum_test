@@ -1,23 +1,9 @@
 h1 Listing questions
 
-table
-  thead
-    tr
-      th Header
-      th Text
-      th
-      th
-      th
+- if @questions.any?
+  = render @questions
 
-  tbody
-    - @questions.each do |question|
-      tr
-        td = question.header
-        td = question.text
-        td = link_to 'Show', question
-        td = link_to 'Edit', edit_question_path(question)
-        td = link_to 'Destroy', question, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
+  br
+  = will_paginate @questions, class: 'bootstrap'
 
 = link_to 'New Question', new_question_path

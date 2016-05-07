@@ -1,0 +1,15 @@
+blockquote
+  p = answer.text
+  = answer.decorate.correction_status_for(current_user.id)  
+  - unless answer.corrections.map(&:user_id).include?(current_user.id)
+    a.btn.btn-primary role='button' data-toggle='collapse' href="#collapseCorrection#{answer.id}" aria-expanded=false aria-controls="collapseCorrection#{answer.id}"
+      | Offer correction
+    .collapse id="collapseCorrection#{answer.id}"
+      .well
+        = simple_form_for(:correction, url: corrections_path, method: :post) do |f|
+          = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
+          = f.input :answer_id, as: :hidden, input_html: { value: answer.id }
+          = f.input :text, as: :text, required: false
+          = f.submit 'Offer the correction', class: 'btn btn-success'
+  - if answer.corrections.any?
+    = render partial: 'correction', collection: answer.corrections

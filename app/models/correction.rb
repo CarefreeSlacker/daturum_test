@@ -5,7 +5,9 @@ class Correction < ActiveRecord::Base
 
   validates :text, presence: true
 
-  state_machine :state, initial: :verification do |
+  after_initialize :set_defaults
+
+  state_machine :state, initial: :verification do
   	state :accepted
   	state :rejected
 
@@ -16,5 +18,11 @@ class Correction < ActiveRecord::Base
   	event :reject do
   	  transition :verification => :rejected
   	end
+  end
+
+  private
+
+  def set_defaults
+    self.state ||= :verification
   end
 end

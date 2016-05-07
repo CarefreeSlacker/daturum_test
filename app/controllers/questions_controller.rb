@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.all
+    @questions = Question.paginate(page: params[:page]).includes(:user, answers: [corrections: :explanation]).order(created_at: :desc)
   end
 
   # GET /questions/1
@@ -69,6 +69,6 @@ class QuestionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def question_params
-      params.require(:question).permit(:header, :text)
+      params.require(:question).permit(:header, :text).merge(user_id: current_user.id)
     end
 end
