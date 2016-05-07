@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Header:
+  = @question.header
+p
+  strong Text:
+  = @question.text
+
+= link_to 'Edit', edit_question_path(@question)
+'|
+= link_to 'Back', questions_path
