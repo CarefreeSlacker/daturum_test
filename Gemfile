@@ -44,6 +44,8 @@ gem 'devise'
 
 gem 'recurrent'
 
+gem 'differ'
+
 gem 'rails_12factor', group: :production
 
 group :development, :test do

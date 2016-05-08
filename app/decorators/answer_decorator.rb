@@ -17,9 +17,23 @@ class AnswerDecorator < Draper::Decorator
   	end
   end
 
+  def correction_differencies
+    return text unless corrected_text
+    Rails.cache.fetch([:answer_text_differencies, id]) do
+      Differ.format = :html
+      highlighting(Differ.diff_by_word(corrected_text, text).to_s).html_safe
+    end
+  end
+
   private
 
   def signing
   	"<span class='label label-primary'><strong>A:</strong></span>"
+  end
+
+  def highlighting(raw_string)
+    raw_string.gsub('<del class="differ">', '<span class="removed">')
+              .gsub('<ins class="differ">', '<span class="added">')
+              .gsub('</del>', '</span>').gsub('</ins>', '</span>')
   end
 end

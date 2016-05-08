@@ -1,10 +1,10 @@
 blockquote
   = render partial: 'questions/partials/label', locals: { object: answer }
-  p = answer.text
+  p = answer.corrected_text || answer.text
   - if answer.corrected_text
     .collapse id="answerCorrectedText#{answer.id}"
       .well
-        = p answer.corrected_text
+        p = answer.decorate.correction_differencies
   = answer.decorate.correction_status_for(current_user.id)  
   - if answer.corrections.any?
     - if answer.belongs_to(current_user.id)

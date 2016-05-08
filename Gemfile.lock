@@ -59,6 +59,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    differ (0.1.2)
     draper (2.1.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
@@ -234,6 +235,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   devise
+  differ
   draper
   factory_girl_rails (~> 4.0)
   jbuilder (~> 2.0)
