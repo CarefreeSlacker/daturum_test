@@ -1,8 +1,18 @@
 blockquote
+  = render partial: 'questions/partials/label', locals: { object: answer }
   p = answer.text
+  - if answer.corrected_text
+    .collapse id="answerCorrectedText#{answer.id}"
+      .well
+        = p answer.corrected_text
   = answer.decorate.correction_status_for(current_user.id)  
-  - unless answer.user_id == current_user.id || answer.corrections.map(&:user_id).include?(current_user.id)
-    a.btn.btn-primary role='button' data-toggle='collapse' href="#collapseCorrection#{answer.id}" aria-expanded=false aria-controls="collapseCorrection#{answer.id}"
+  - if answer.corrections.any?
+    - if answer.belongs_to(current_user.id)
+      = render partial: 'questions/partials/accept_reject_correction', collection: answer.corrections, as: :correction
+    - else
+      = render partial: 'questions/partials/correction', collection: answer.corrections, as: :correction
+  - unless answer.user_id == current_user.id || answer.corrections.where(state: 'verification').pluck(:user_id).include?(current_user.id)
+    a role='button' data-toggle='collapse' href="#collapseCorrection#{answer.id}" aria-expanded=false aria-controls="collapseCorrection#{answer.id}"
       | Offer correction
     .collapse id="collapseCorrection#{answer.id}"
       .well
@@ -10,9 +20,4 @@ blockquote
           = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
           = f.input :answer_id, as: :hidden, input_html: { value: answer.id }
           = f.input :text, as: :text, required: false
-          = f.submit 'Offer the correction', class: 'btn btn-success'
-  - if answer.corrections.any?
-    - if answer.belongs_to(current_user.id)
-      = render partial: 'questions/partials/accept_reject_correction', collection: answer.corrections, as: :correction
-    - else
-      = render partial: 'questions/partials/correction', collection: answer.corrections, as: :correction
+          = f.submit 'Offer the correction', class: 'btn btn-success'    

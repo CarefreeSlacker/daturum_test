@@ -15,12 +15,13 @@ class AnswersController < ApplicationController
   end
 
   def update
+    answer_corrector = AnswerCorrectorService.new(@answer, answer_params)
     respond_to do |format|
-      if @answer.update(answer_params)
-        format.html { redirect_to @answer, notice: 'Answer was successfully updated.' }
+      if answer_corrector.perform
+        format.html { redirect_to :back, notice: 'Answer was successfully updated.' }
         format.json { render :show, status: :ok, location: @answer }
       else
-        format.html { render :edit }
+        format.html { redirect_to :back, notice: "Correction rolled back because #{answer_corrector.answer.errors.full_messages}" }
         format.json { render json: @answer.errors, status: :unprocessable_entity }
       end
     end
@@ -40,6 +41,6 @@ class AnswersController < ApplicationController
     end
 
     def answer_params
-      params.require(:answer).permit(:user_id, :question_id, :text)
+      params.require(:answer).permit(:user_id, :question_id, :text, :corrected_text, corrections_attributes: [:id])
     end
 end

@@ -7,6 +7,8 @@ class Correction < ActiveRecord::Base
 
   after_initialize :set_defaults
 
+  accepts_nested_attributes_for :explanation
+
   state_machine :state, initial: :verification do
   	state :accepted
   	state :rejected

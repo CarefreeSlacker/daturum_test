@@ -1,3 +1,7 @@
 blockquote
   = correction.decorate.correction_status_for(current_user.id)
   p = correction.text
+  = raise 'error'
+  - if correction.status == 'accepted'
+    a role='button' data-toggle='collapse' href="#answerCorrectedText#{correction.answer_id}" aria-expanded=false aria-controls="answerCorrectedText#{correction.answer_id}"
+      = Show

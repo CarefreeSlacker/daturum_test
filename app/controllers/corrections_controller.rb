@@ -14,7 +14,7 @@ class CorrectionsController < ApplicationController
   end
 
   def update
-    correction_service = CorrectionAcceptRejectService.new(@correction, params)
+    correction_service = CorrectionRejectService.new(@correction, correction_params)
     respond_to do |format|
       if correction_service.perform
         format.html { redirect_to :back, notice: 'Correction was successfully updated.' }
@@ -40,6 +40,6 @@ class CorrectionsController < ApplicationController
     end
 
     def correction_params
-      params.require(:correction).permit(:user_id, :answer_id, :text)
+      params.require(:correction).permit(:user_id, :answer_id, :text, explanation_attributes: [:text])
     end
 end
