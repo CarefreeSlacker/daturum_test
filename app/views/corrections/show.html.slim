@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong User:
+  = @correction.user_id
+p
+  strong Answer:
+  = @correction.answer_id
+p
+  strong Text:
+  = @correction.text
+
+= link_to 'Edit', edit_correction_path(@correction)
+'|
+= link_to 'Back', corrections_path

@@ -11,7 +11,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507124639) do
+ActiveRecord::Schema.define(version: 20160508133334) do
+
+  create_table "answers", force: :cascade do |t|
+    t.integer  "question_id"
+    t.integer  "user_id"
+    t.string   "text"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "corrected_text"
+  end
+
+  add_index "answers", ["question_id"], name: "index_answers_on_question_id"
+  add_index "answers", ["user_id"], name: "index_answers_on_user_id"
+
+  create_table "corrections", force: :cascade do |t|
+    t.integer  "answer_id"
+    t.string   "text"
+    t.string   "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+  end
+
+  add_index "corrections", ["answer_id"], name: "index_corrections_on_answer_id"
+  add_index "corrections", ["user_id"], name: "index_corrections_on_user_id"
+
+  create_table "explanations", force: :cascade do |t|
+    t.integer  "correction_id"
+    t.string   "text"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "explanations", ["correction_id"], name: "index_explanations_on_correction_id"
+
+  create_table "questions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "header"
+    t.text     "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "questions", ["user_id"], name: "index_questions_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

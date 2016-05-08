@@ -1,0 +1,17 @@
+blockquote
+  = render partial: 'questions/partials/label', locals: { object: question }
+  p = question.header
+  footer = question.text
+  - if question.answers.any?
+    = render partial: 'questions/partials/answer', collection: question.answers, as: :answer
+  = question.decorate.answer_status_for(current_user.id)
+  - unless question.user_id == current_user.id
+    a role='button' data-toggle='collapse' href="#collapseQuestion" aria-expanded=false aria-controls='collapseQuestion'
+      = question.decorate.text_for_answer(current_user.id)
+    #collapseQuestion.collapse
+      .well
+        = simple_form_for(:answer, url: answers_path, method: :post) do |f|
+          = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
+          = f.input :question_id, as: :hidden, input_html: { value: question.id }
+          = f.input :text, as: :text, required: false
+          = f.submit 'Answer the question', class: 'btn btn-success'

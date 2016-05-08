@@ -1,0 +1,10 @@
+= simple_form_for(@question) do |f|
+  = f.error_notification
+
+  .form-inputs
+  	= f.input :user_id, as: :hidden, value: current_user.id
+    = f.input :header
+    = f.input :text
+
+  .form-actions
+    = f.button :submit

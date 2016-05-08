@@ -1,0 +1,9 @@
+h1 Listing questions
+
+- if @questions.any?
+  = render partial: 'questions/partials/question', collection: @questions, as: :question
+
+  br
+  = will_paginate @questions, class: 'bootstrap'
+
+= link_to 'New Question', new_question_path

@@ -1,0 +1,8 @@
+- if correction.state != 'rejected' || correction.user_id == current_user.id 
+  = render partial: 'questions/partials/label', locals: { object: correction }
+  blockquote
+    = correction.decorate.correction_status_for(current_user.id)
+    p = correction.text
+    - if correction.state == 'accepted'
+      a role='button' data-toggle='collapse' href="#answerCorrectedText#{correction.answer_id}" aria-expanded=false aria-controls="answerCorrectedText#{correction.answer_id}"
+        | Show answer changes
