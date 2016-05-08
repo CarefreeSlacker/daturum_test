@@ -1,0 +1,5 @@
+= render partial: 'questions/partials/correction', locals: { correction: correction }
+- if correction.state == 'verification'
+  = simple_form_for(correction, url: correction_path(correction), method: :patch) do |f|
+    = f.submit 'Accept', class: 'btn btn-success'
+    = f.submit 'Reject', class: 'btn btn-warning'

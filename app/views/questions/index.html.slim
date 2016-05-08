@@ -1,7 +1,7 @@
 h1 Listing questions
 
 - if @questions.any?
-  = render @questions
+  = render partial: 'questions/partials/question', collection: @questions, as: :question
 
   br
   = will_paginate @questions, class: 'bootstrap'

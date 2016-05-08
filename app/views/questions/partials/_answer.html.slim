@@ -1,7 +1,7 @@
 blockquote
   p = answer.text
   = answer.decorate.correction_status_for(current_user.id)  
-  - unless answer.corrections.map(&:user_id).include?(current_user.id)
+  - unless answer.user_id == current_user.id || answer.corrections.map(&:user_id).include?(current_user.id)
     a.btn.btn-primary role='button' data-toggle='collapse' href="#collapseCorrection#{answer.id}" aria-expanded=false aria-controls="collapseCorrection#{answer.id}"
       | Offer correction
     .collapse id="collapseCorrection#{answer.id}"
@@ -12,4 +12,7 @@ blockquote
           = f.input :text, as: :text, required: false
           = f.submit 'Offer the correction', class: 'btn btn-success'
   - if answer.corrections.any?
-    = render partial: 'correction', collection: answer.corrections
+    - if answer.belongs_to(current_user.id)
+      = render partial: 'questions/partials/accept_reject_correction', collection: answer.corrections, as: :correction
+    - else
+      = render partial: 'questions/partials/correction', collection: answer.corrections, as: :correction

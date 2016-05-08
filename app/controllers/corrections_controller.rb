@@ -14,9 +14,10 @@ class CorrectionsController < ApplicationController
   end
 
   def update
+    correction_service = CorrectionAcceptRejectService.new(@correction, params)
     respond_to do |format|
-      if @correction.update(correction_params)
-        format.html { redirect_to @correction, notice: 'Correction was successfully updated.' }
+      if correction_service.perform
+        format.html { redirect_to :back, notice: 'Correction was successfully updated.' }
         format.json { render :show, status: :ok, location: @correction }
       else
         format.html { render :edit }
